@@ -1,0 +1,3 @@
+This program was written in an afternoon with the original intention of solving the simple problem of making it easier to type pinyin letters with accents. Along the way, it turned into something significantly more advanced, with support for handling user-defined flashcard groups and selecting custom output formats using a basic command language.
+
+See the source code for this and the author's other projects at github.com/justinyaodu/

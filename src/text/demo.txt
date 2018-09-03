@@ -1,0 +1,50 @@
+## ======== Introduction ======== ##
+
+## Welcome to Quizlet Generator for Chinese! This program is designed to be an efficient and powerful way to create Quizlets to study Chinese.
+
+## ======== Tutorial ======== ##
+
+## This side of the screen is where you will be editing your file. The right side will display the generated flashcards, which can be copy-pasted into the Quizlet import page. If there are errors in this file, an error message will be displayed instead.
+
+## Lines beginning with two pound signs and a space are comments. You can use these to leave notes to yourself. In this example file, comments will be used to explain what each of the commands do. Blank lines are ignored, so you can use them anywhere to break up your file into organized chunks.
+
+## Commands consist of a pound sign followed by a specific word. Commands may have options, which are written after the name of the command. In the line below, the #group command names a group of vocabulary terms. It takes one option, the name of the group ("lessonvocab" in this case).
+
+#group lessonvocab
+
+## Inside a group, each block of three lines describes a vocabulary term. The Chinese characters are followed by the pinyin and the English definition. For pinyin, a number placed after a vowel will give that letter the appropriate tone marking.
+
+你好
+ni3ha3o
+hello
+
+再见
+za4ijia4n
+goodbye
+
+## The #endgroup command marks the end of this group.
+#endgroup
+
+## The #showgroup command is what outputs the cards corresponding to a group of vocabulary terms. The format specifiers "reading" and "writing" are used to select what you want to practice, which will affect what is displayed on each side of the generated flashcard. The "reading" option has the Chinese characters on the front side and pinyin and English on the back, while the "writing" option has English on the front and pinyin and characters on the back.
+
+#showgroup lessonvocab reading writing
+
+## The true power of groups and the showgroup command is seen when you want to treat some groups of vocabulary terms differently. We created flashcards to practice reading and writing for the "lessonvocab" group above, but here for the "review" group we create flashcards for reading only. If you ever change your mind about how you want to study, you only have to change the #showgroup line.
+
+#group review
+
+中文
+zho1ngwe2n
+Chinese
+
+绿色
+lv4se4
+green
+
+#endgroup
+
+#showgroup review reading
+
+## ======== Other Features ======== ##
+
+## This program supports basic text editor functionality (file opening and saving). Zoom and word wrap are accessible from the View menu or by keyboard shortcuts. The divider down the middle is adjustable if you want more room on one side or the other.

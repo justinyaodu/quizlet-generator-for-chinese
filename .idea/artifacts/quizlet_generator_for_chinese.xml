@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="quizlet-generator-for-chinese">
+    <output-path>$PROJECT_DIR$/out/artifacts/quizlet-generator-for-chinese</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="gui.GUI" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="" />
+        <option name="vendor" value="" />
+        <option name="version" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="quizlet-generator-for-chinese.jar">
+        <element id="module-output" name="quizlet-generator-for-chinese" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,9 @@
+#group vocab
+
+你好
+ni3ha3o
+hello
+
+#endgroup
+
+#showgroup vocab reading writing
