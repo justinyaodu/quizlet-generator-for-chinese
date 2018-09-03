@@ -10,7 +10,7 @@ Download the executable JAR file [here](https://github.com/justinyaodu/quizlet-g
 
 ## About
 
-This program was written in an afternoon with the original intention of solving the simple problem of making it easier to type pinyin letters with accents. Along the way, it turned into something significantly more advanced, with support for handling user-defined flashcard groups and selecting custom output formats using a basic command language.
+This program was written in an afternoon with the original intention of making it easier to type pinyin letters with accents. Along the way, it turned into something significantly more advanced, with support for handling user-defined flashcard groups and selecting custom output formats using a basic command language.
 
 ## License
 
