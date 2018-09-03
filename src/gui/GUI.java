@@ -17,16 +17,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import parse.Parser;
-import text.TextLoader;
+import text.TextIO;
 
-import java.io.*;
+import java.io.File;
 import java.util.Optional;
 
 public class GUI extends Application
 {
 	private Stage stage;
 
-	private MenuItem newFile;
+	private MenuItem save;
 	private MenuItem saveAs;
 	private CheckMenuItem wordWrap = buildWordWrap();
 
@@ -52,7 +52,7 @@ public class GUI extends Application
 		stage.setOnCloseRequest(buildCloseHandler());
 
 		stage.setScene(buildScene());
-		open(TextLoader.loadInternal("demo.txt"), null);
+		openFile(null, TextIO.readInternal("demo.txt"));
 
 		stage.setWidth(1024);
 		stage.setHeight(768);
@@ -102,7 +102,7 @@ public class GUI extends Application
 		{
 			if (button.get().equals(buttonYes))
 			{
-				newFile.fire();
+				save.fire();
 				return false;
 			}
 			else
@@ -141,15 +141,16 @@ public class GUI extends Application
 
 	private MenuItem buildNew()
 	{
-		newFile = new MenuItem("_New");
+		MenuItem newFile = new MenuItem("_New");
 		newFile.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
-		newFile.setOnAction(actionEvent -> {
+		newFile.setOnAction(actionEvent ->
+		{
 			if (doNotOverwrite())
 			{
 				return;
 			}
 
-			open(TextLoader.loadInternal("new.txt"), null);
+			openFile(null, TextIO.readInternal("new.txt"));
 		});
 		return newFile;
 	}
@@ -170,13 +171,13 @@ public class GUI extends Application
 			File file = chooser.showOpenDialog(stage);
 			if (file != null)
 			{
-				open(TextLoader.loadExternal(file), file);
+				openFile(file, TextIO.readExternal(file));
 			}
 		});
 		return open;
 	}
 
-	private void open(String string, File file)
+	private void openFile(File file, String string)
 	{
 		if (string != null)
 		{
@@ -190,47 +191,12 @@ public class GUI extends Application
 		}
 	}
 
-//	private void openInternal(String filename)
-//	{
-//		openInputStream(GUI.class.getClassLoader().getResourceAsStream("text/" + filename), null);
-//	}
-
-//	private void openInputStream(InputStream inputStream, File file)
-//	{
-//		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//
-//		StringBuilder stringBuilder = new StringBuilder();
-//		String line;
-//		try
-//		{
-//			while (true)
-//			{
-//				line = bufferedReader.readLine();
-//				if (line == null)
-//				{
-//					break;
-//				}
-//
-//				stringBuilder.append(line);
-//				stringBuilder.append('\n');
-//			}
-//		}
-//		catch (IOException e)
-//		{
-//			new Alert(Alert.AlertType.ERROR, "File could not be opened!", buttonOk).showAndWait();
-//			return;
-//		}
-//
-//		input.setText(stringBuilder.toString());
-//		unsaved.set(false);
-//		currentFile.set(file);
-//	}
-
 	private MenuItem buildSave()
 	{
-		newFile = new MenuItem("_Save");
-		newFile.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
-		newFile.setOnAction(actionEvent -> {
+		save = new MenuItem("_Save");
+		save.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
+		save.setOnAction(actionEvent ->
+		{
 			if (currentFile.getValue() != null)
 			{
 				saveFile(currentFile.get());
@@ -240,7 +206,7 @@ public class GUI extends Application
 				saveAs.fire();
 			}
 		});
-		return newFile;
+		return save;
 	}
 
 	private MenuItem buildSaveAs()
@@ -251,35 +217,31 @@ public class GUI extends Application
 		{
 			FileChooser chooser = new FileChooser();
 			chooser.setTitle("Save As");
-			saveFile(chooser.showSaveDialog(stage));
+
+			File file = chooser.showSaveDialog(stage);
+			if (file == null)
+			{
+				return;
+			}
+
+			//append filename extension
+			if (!file.getPath().substring(file.getPath().length() - 4).equals(".txt"))
+			{
+				file = new File(file.getPath() + ".txt");
+			}
+			saveFile(file);
 		});
 		return saveAs;
 	}
 
 	private void saveFile(File file)
 	{
-		PrintWriter writer;
-		try
-		{
-			if (!file.getPath().substring(file.getPath().length() - 4).equals(".txt"))
-			{
-				file = new File(file.getPath() + ".txt");
-			}
-			writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8")));
-		}
-		catch (NullPointerException e)
-		{
-			//user canceled save
-			return;
-		}
-		catch (IOException e)
+		if (TextIO.writeExternal(file, input.getText()))
 		{
 			new Alert(Alert.AlertType.ERROR, "File could not be saved!", buttonOk).showAndWait();
 			return;
 		}
 
-		writer.print(input.getText());
-		writer.flush();
 		unsaved.set(false);
 		currentFile.set(file);
 	}
@@ -325,7 +287,7 @@ public class GUI extends Application
 			Alert alert = new Alert(Alert.AlertType.INFORMATION, null, buttonOk);
 			alert.setTitle("About");
 			alert.setHeaderText("About Quizlet Generator for Chinese v. 1.0");
-			alert.setContentText(TextLoader.loadInternal("about.txt"));
+			alert.setContentText(TextIO.readInternal("about.txt"));
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.show();
 		});
@@ -340,7 +302,7 @@ public class GUI extends Application
 			Alert alert = new Alert(Alert.AlertType.INFORMATION, null, buttonOk);
 			alert.setTitle("License");
 			alert.setHeaderText("MIT License");
-			alert.setContentText(TextLoader.loadInternal("license.txt"));
+			alert.setContentText(TextIO.readInternal("license.txt"));
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.show();
 		});
